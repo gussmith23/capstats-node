@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  - if(player.constructor !== Array) player = [player]
+  each player_i in player 
+      p player_i
