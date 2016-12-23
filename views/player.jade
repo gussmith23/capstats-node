@@ -1,6 +1,56 @@
 extends layout
 
+mixin playerEntry(player)
+  if player.name
+    h2 #{player.name}
+  else
+    h2 Unnamed Player
+  table
+    each val, key in player
+      // Add fields into table
+      if val && key != "name" && key != "id"
+        tr
+          td(style='font-weight:bold') #{key}
+          td #{val}
+    // Add link to player's page
+    tr
+      td(style="font-weight:bold") link
+      td 
+        a(href="/player/#{player.id}") player/#{player.id}
+
+mixin addPlayerForm()
+  form(method="post", action="/player")
+    div.input
+      label(for="name") Name
+      input(type="text", name="name")
+    div.input
+      label(for="telegramId") Telegram ID
+      input(type="number", name="telegramId", min="0")
+    div.input
+      label(for="telegramUsername") Telegram Username
+      input(type="text", name="telegramUsername")
+    div.actions
+      input(type="submit", value="Add Player")
+
+
+mixin searchForm()
+  form(method="get", action="/player")
+    div.input
+      label(for="name") Name
+      input(type="text", name="name")
+    div.input
+      label(for="telegramId") Telegram ID
+      input(type="text", name="telegramId")
+    div.input
+      label(for="telegramUsername") Telegram Username
+      input(type="text", name="telegramUsername")
+    div.actions
+      input(type="submit", value="Search")
+
 block content
   - if(player.constructor !== Array) player = [player]
-  each player_i in player 
-      p player_i
+  if showForm
+    +addPlayerForm()
+    +searchForm()
+  each player_i in player
+    +playerEntry(player_i)
