@@ -1,4 +1,5 @@
-mixin playerEntry(player)
+mixin playerTable(player)
+  - var playerId = player.id
   if player.name
     h2 #{player.name}
   else
@@ -14,7 +15,9 @@ mixin playerEntry(player)
     tr
       td(style="font-weight:bold") link
       td 
-        a(href="/player/#{player.id}") player/#{player.id}
+        // In Jade, you could do #{player.id} within the href itself.
+        // This is their suggested solution.
+        a(href="/player/" + playerId) player/#{player.id}
 
 mixin addPlayerForm()
   form(method="post", action="/player")
