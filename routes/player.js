@@ -55,11 +55,22 @@ router.post('/', function(req, res, next) {
   console.dir(playerJson);
 
   request.post(
+    // TODO(gus): replace with constant
     'http://localhost:23232/player',
-    {json: playerJson},
+    {json: playerJson,
+      qs: {
+        // TODO(gus): this is ok, but could be better.
+        key : process.env.CAPSTATS_API_KEY
+      }},
     function (error, response, body) {
-      if (error || response.statusCode != 200) return;
-      //console.log(body);
+      // TODO(gus): what to do here?
+      if (error) {
+        console.log(error);
+        return;
+      }
+      console.log("Response status code: %d", response.statusCode);
+      if (response.statusCode != 200) return;
+      console.log(body);
     });
 
   res.redirect('/player');
